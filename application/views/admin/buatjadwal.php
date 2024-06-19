@@ -8,7 +8,7 @@
   <meta name="description" content="">
   <meta name="author" content="">
   <link href="<?php echo base_url('assets/img/logo/logo.png'); ?>" rel="icon">
-  <title>Jadwal Kuliah Fakultas Teknik</title>
+  <title>Sistem Penjadwalan Perkuliahan D3 Teknik Informatika PSDKU</title>
   <link href="<?php echo base_url('assets/vendor/fontawesome-free/css/all.min.css');  ?>" rel="stylesheet" type="text/css">
   <link href="<?php echo base_url('assets/vendor/bootstrap/css/bootstrap.min.css'); ?>" rel="stylesheet" type="text/css">
   <!-- <link href="<?php echo base_url('assets/css/ruang-admin.min.css'); ?>" rel="stylesheet"> -->
@@ -161,8 +161,13 @@
                   </button>
                   </form>
 
+								<div class="input-group p-3">
+									<span class="input-group-text"><i class="text-secondary fa-solid fa-magnifying-glass"></i></span>
+									<input class="form-control" id="searchInput" type="text" placeholder="Cari data jadwal" />
+								</div>
+
                 <div class="table-responsive table-striped table-hover table-responsive p-3">
-                  <table class="table align-items-center table-flush" id="table" data-url="<?php echo base_url('admin/getData?tabel=tbl_jadwalkuliah') ?>" data-toggle="table" data-pagination="true" data-page-size="20" data-page-list="[10, 25, 50, 100, ALL]" data-search="true" data-row-style="rowStyle">
+                  <table class="table align-items-center table-flush" id="table" data-url="<?php echo base_url('admin/getData?tabel=tbl_jadwalkuliah') ?>" data-toggle="table" data-pagination="true" data-page-size="20" data-page-list="[10, 25, 50, 100, ALL]" data-click-to-select="true" data-row-style="rowStyle">
                     <thead class="text-dark text-center">
                       <tr>
                         <th data-field="no" data-formatter="indexFormatter" class="font-14 text-center">#</th>
@@ -176,6 +181,7 @@
                         <th data-field="kelas" class="font-14">Kelas</th>
                         <th data-field="dosen" class="font-14">Dosen</th>
                         <th data-field="ruang" class="font-14">Ruangan</th>
+                        <th data-field="aksi" data-formatter="aksiFormatter" data-events="window.aksiEvents" class="text-center">Aksi</th>
                         <th data-field="programstudi" data-visible="false" class="font-14">Program Studi</th>
                       </tr>
                     </thead>
@@ -210,7 +216,7 @@
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h4 class="modal-title" id="myModalLabel">Form Cek Jadwal Bentrok</h4>
+                    <h4 class="modal-title">Cek Jadwal Bentrok</h4>
                     <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
                 </div>
                 <div class="modal-body">
@@ -235,7 +241,7 @@
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h4 class="modal-title" id="myModalLabel">Form Cetak</h4>
+                    <h4 class="modal-title" id="myModalLabel">Cetak Jadwal</h4>
                     <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
                 </div>
                 <div class="modal-body">
@@ -250,7 +256,7 @@
         </div>
     </div>
 		
-					<div class="modal fade" id="ubahModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+		<div class="modal fade" id="ubahModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
             aria-hidden="true">
             <div class="modal-dialog" role="document">
               <div class="modal-content">
@@ -365,6 +371,19 @@
       <script src="<?php echo base_url('assets/vendor/select2/select2.min.js') ?>"></script>
     <script>
       $(document).ready(function () {
+				$('#table').bootstrapTable({
+					search: true // Disable default search box
+				});
+
+				// Custom search input functionality
+				$('#searchInput').on('input', function () {
+					var searchText = $(this).val();
+					$('#table').bootstrapTable('refreshOptions', {
+						search: true,
+						searchText:  searchText
+					});
+				});
+
         var dataSelected;
         editManager = function (value, record, $cell, $displayEl, id, $grid) {
                     var data = $grid.data(),
@@ -700,9 +719,9 @@
           var field = $('select[name=filter]').val();
 
             switch(field.toString()){
-              case 'programstudi':
-                $('#table').bootstrapTable('filterBy', {programstudi: $(this).val()});
-                break;
+              // case 'programstudi':
+              //   $('#table').bootstrapTable('filterBy', {programstudi: $(this).val()});
+              //   break;
               case 'nama_mk':
                 $('#table').bootstrapTable('filterBy', {nama_mk: $(this).val()});
                 break;
@@ -811,7 +830,6 @@
         });
       }
 
-
       function getTotalJadwal(data,prodi){
         var res = jQuery.ajax({
             type: "POST",
@@ -899,7 +917,6 @@
 					}
 
           const totalRows = $('#table').bootstrapTable('getOptions').totalRows;
-          // const laporan = '<embed src="<?php echo base_url() ?>cetak?field='+field+'&filter='+filter+'" frameborder="1" width="100%" height="400px">';
 					const laporan = `<embed src="<?php echo base_url() ?>cetak?field=${field}&filter=${filter}" frameborder="1" width="100%" height="400px">`;
 
           if (totalRows > 0) {
@@ -1030,6 +1047,34 @@
                 });
             }
         }
+			
+			
+        // function rowStyle(row, index) {
+        //   var classes = 'table-light';
+          
+
+        //   if (row.programstudi == 'Teknik Informatika') {
+        //     return {
+        //       classes: classes[0]
+        //     }
+        //   }else
+        //   if (row.programstudi == 'Teknik Elektro') {
+        //     return {
+        //       classes: classes[1]
+        //     }
+        //   }else
+        //   if (row.programstudi == 'Teknik Sipil') {
+        //     return {
+        //       classes: classes[2]
+        //     }
+        //   }else
+        //   if (row.programstudi == 'Perencanaan Wilayah dan Kota') {
+        //     return {
+        //       classes: classes[3]
+        //     }
+        //   }
+        //   return {}
+        // }
 
         jQuery.fn.ForceNumericOnly = function(){
             return this.each(function()
