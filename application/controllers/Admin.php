@@ -94,46 +94,6 @@ class Admin extends CI_Controller
 		}
 	}
 
-	// public function generateJam(){
-	// 	$keys = array_column($this->input->post('data'),'name');
-	// 	$values = array_column($this->input->post('data'),'value');
-
-	// 	$data = array_combine($keys, $values);
-
-	// 	$jam_mulai = new DateTime($data['jamMulai']);
-	// 	$jam_selesai = new DateTime($data['jamSelesai']);
-	// 	$jam_sks = 'PT'.$data['jamSKS'].'M';
-
-	// 	if ($jam_mulai < $jam_selesai) {
-	// 		$this->db->query("DELETE FROM tbl_jam");
-
-	// 		$i = 1;
-	// 		while ($jam_mulai < $jam_selesai) {
-	// 			// $array_jam[] = $jam_mulai->add(new DateInterval($jam_sks));
-	// 			$jamStart = $jam_mulai->format('H:i');
-	// 			$jamEnd = $jam_mulai->add(new DateInterval($jam_sks))->format('H:i');
-
-	// 			$array_jam = array('id' => $i, 'range_jam' => $jamStart.'-'.$jamEnd);
-
-	// 			$tambah = $this->Admin_models->setTambah('tbl_jam',$array_jam);
-
-	// 			$i++;
-	// 		}
-
-
-	// 		if ($tambah) {
-	// 			$res = array(true, 'Jam berhasil digenerate');
-	// 		}else{
-	// 			$res = array(false, 'Jam gagal dibuat');
-	// 		}
-
-	// 	}else{
-	// 		$res = array(false, 'Jam mulai harus lebih besar dari jam selesai');
-	// 	}
-
-	// 	echo json_encode($res);
-	// }
-
 	public function generateJam(){
 		$keys = array_column($this->input->post('data'), 'name');
 		$values = array_column($this->input->post('data'), 'value');
@@ -247,6 +207,13 @@ class Admin extends CI_Controller
 	}
 
 	public function buatjadwal(){
+		$data['dataHari'] = $this->Admin_models->ambilData('tbl_hari');
+		$data['dataJam'] = $this->Admin_models->ambilData('tbl_jam');
+		$data['dataKelas'] = $this->Admin_models->ambilData('tbl_kelas');
+		$data['dataMatkul'] = $this->Admin_models->ambilData('tbl_matakuliah');
+		$data['dataDosen'] = $this->Admin_models->ambilData('tbl_dosen');
+		$data['dataRuang'] = $this->Admin_models->ambilData('tbl_ruang');
+		
 		if ($this->input->post('manajemen') !== NULL) {
 			if ($this->input->post('manajemen') == 'getDataFilter') {
 				$tbl = $this->input->post('tabel');

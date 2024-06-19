@@ -249,7 +249,106 @@
             </div>
         </div>
     </div>
-
+		
+					<div class="modal fade" id="ubahModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+            aria-hidden="true">
+            <div class="modal-dialog" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="myModalLabel">Ubah Jadwal</h5>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <div class="modal-body">
+                  <form id="formJadwal">
+                    <input type="hidden" name="id">
+                    <div class="form-group row">
+											<div class="col-sm-6">
+												<label for="selectHari" class="col-form-label">Hari</label>
+												<select class="form-control" name="hari" data-bv-notempty="true" data-bv-notempty-message="Hari harus dipilih" readonly>
+													<option value="">- Pilih Hari -</option>
+													<?php 
+														foreach ($dataHari as $value) {
+															echo "<option value='{$value['nama']}'>{$value['nama']}</option>";
+														}
+													?>
+												</select>
+                      </div>
+											<div class="col-sm-6">
+												<label for="selectJam" class="col-form-label">Jam</label>
+												<select class="form-control" name="range_jam" data-bv-notempty="true" data-bv-notempty-message="Jam harus dipilih" readonly>
+													<option value="">- Pilih Jam -</option>
+													<?php 
+														foreach ($dataJam as $value) {
+															echo "<option value='{$value['range_jam']}'>{$value['range_jam']}</option>";
+														}
+													?>
+												</select>
+                      </div>
+                    </div>
+                    <div class="form-group row">
+											<div class="col-sm-12">
+												<label for="selectMatkul" class="col-form-label">Matkul</label>
+												<select class="form-control" name="nama_mk" data-bv-notempty="true" data-bv-notempty-message="Matkul harus dipilih" readonly>
+													<option value="">- Pilih Matkul -</option>
+													<?php 
+														foreach ($dataMatkul as $value) {
+															echo "<option value='{$value['nama']}'>{$value['nama']}</option>";
+														}
+													?>
+												</select>
+                      </div>
+                    </div>
+                    <div class="form-group row">
+											<div class="col-sm-6">
+												<label for="inputSks" class="col-form-label">SKS</label>
+                        <input type="text" class="form-control" id="inputSks" name="sks" placeholder="SKS" data-bv-notempty="true" data-bv-notempty-message="SKS tidak boleh kosong" readonly>
+                      </div>
+											<div class="col-sm-6">
+												<label for="inputSemester" class="col-form-label">Semester</label>
+                        <input type="text" class="form-control" id="inputSemester" name="semester" placeholder="Semester" data-bv-notempty="true" data-bv-notempty-message="Semester tidak boleh kosong" readonly>
+                      </div>
+                    </div>
+                    
+                    <div class="form-group row">
+											<div class="col-sm-12">
+												<label for="selectDosen" class="col-form-label">Dosen</label>
+												<select class="form-control" name="dosen" data-bv-notempty="true" data-bv-notempty-message="Dosen harus dipilih" readonly>
+													<option value="">- Pilih Dosen -</option>
+													<?php 
+														foreach ($dataDosen as $value) {
+															echo "<option value='{$value['nama']}'>{$value['nama']}</option>";
+														}
+													?>
+												</select>
+                      </div>
+                    </div>
+                    <div class="form-group row">
+											<div class="col-sm-12">
+												
+												<label for="selectRuang" class="col-form-label">Ruang</label>
+												<select class="form-control" name="ruang" data-bv-notempty="true" data-bv-notempty-message="Ruang harus dipilih">
+													<option value="">- Pilih Ruang -</option>
+													<?php 
+														foreach ($dataRuang as $value) {
+															echo "<option value='{$value['nama']}'>{$value['nama']}</option>";
+														}
+													?>
+												</select>
+                      </div>
+                    </div>
+                  </form>
+                </div>
+                <div class="modal-footer d-flex">
+									<button type="button" class="btn btn-outline-secondary flex-fill" data-dismiss="modal">Tutup</button>
+                  <button class="btn bg-biru flex-fill" id="updateBtn">
+                    <span class="text text-white">Update</span>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
           </div>
           <!--Row-->
         </div>
@@ -656,68 +755,6 @@
             }
          })
 
-      // function run_server_ga(jenis_semester, tahun_akademik, start)
-      // {
-      //      console.log("Memanggil server untuk membuat JADWAL pada : " + new Date().toLocaleString() );
-
-      //    if (!!window.EventSource) {
-       
-      //     var source= new EventSource("<?php echo base_url() ?>"+"admin/generatejadwal?jenis_semester="+jenis_semester+"&tahun_akademik="+tahun_akademik);
-
-      //     var curr_fitness = 0;
-      //     const curr_val = $('#myProgress').val();
-       
-      //    source.addEventListener('update', function(e)
-      //    {
-      //      var data = JSON.parse(e.data);
-          
-      //       const fitness = data.fitness;
-
-      //       if (curr_val <= fitness) {
-      //           var new_val = fitness * 100;
-      //       }
-
-      //       const percent = parseInt(curr_val > new_val ? curr_val : new_val);
-      //       $('#myProgress').attr('aria-valuenow', percent).css('width', percent + '%').text(percent + '%')
-
-      //      if (data.status==true){
-      //         source.close();
-
-      //         const waktu = convertTime(start);
-
-      //        createNotification('success', 'Jadwal kuliah berhasil dibuat, Waktu Proses = '+waktu);
-
-      //        $('#table').bootstrapTable('refresh');
-      //     }else
-      //     if(data.status=='gagal'){
-      //       source.close();
-
-      //       const waktu = convertTime(start);
-
-      //       createNotification('error', 'Tidak ditemukan solusi optimal, Waktu Proses = '+waktu);
-      //     }
-          
-      // }, false);
-
-      // source.onerror = function(e) {
-      //   console.log('failed');
-      //   source.close();
-
-      //   const waktu = convertTime(start);
-
-      //   createNotification('error', 'Terjadi masalah di server, Waktu Proses = '+waktu);
-        
-      // };
-
-      // } else {
-      //   console.log('not support');
-      //   source.close();
-
-      //   createNotification('error', 'Browser yang anda gunakan tidak support SSE, harap gunakan browser yang lain');
-      // }
-
-      // }
-
       function createNotification(status, teks){
         $('.progress').removeClass('d-block').addClass('d-none');
 
@@ -774,142 +811,6 @@
         });
       }
 
-    //   const forLoop = async (result_jurusan, data) => {
-    //     var start = new Date().getTime();
-    //     var prodi = $('select[name=prodi]').val();
-
-    //     const total_jadwal = getTotalJadwal(data,prodi);
-
-    //     const data_progress = $.map(result_jurusan, function(val,index){
-    //       // return [(100/result_jurusan.length)*index];
-    //       return [Math.round((total_jadwal.prodi[index].total/total_jadwal.total) * 100)]
-    //     })
-
-    //     for (var i = 0; i < result_jurusan.length; i++) {
-    //       var jurusan = result_jurusan[i].jurusan;
-    //       var last_response_len = false;
-    //       var nilai_awal_progress = parseInt(total_jadwal.progress[i]);
-    //       $('#myProgress').attr('aria-valuenow', nilai_awal_progress).css('width', nilai_awal_progress + '%').text(nilai_awal_progress + '%');
-
-    //     const ajax = await jQuery.ajax({
-    //         type: "POST",
-    //         url: "<?php echo base_url() ?>"+"admin/generatejadwal",
-    //         // dataType: 'JSON',
-    //         data: {data:data,jurusan:jurusan,total:total_jadwal.prodi[i].total},
-    //         cache: true,
-    //         async : true,
-    //         xhr: function () {
-    //             var xhr = new window.XMLHttpRequest();
-    //             //Download progress
-    //             xhr.addEventListener("progress", function (evt) {
-    //               // console.log(evt.currentTarget.response);
-    //               var this_response, response = evt.currentTarget.response;
-    //               if(last_response_len === false)
-    //               {
-    //                   this_response = response;
-    //                   last_response_len = response.length;
-    //               }
-    //               else
-    //               {
-    //                   this_response = response.substring(last_response_len);
-    //                   last_response_len = response.length;
-    //               }
-
-    //                 var curr_fitness = 0.0000;
-
-    //                 try{
-    //                   var fitness = JSON.parse(this_response.split('}{')).fitness;  
-    //                   curr_fitness = fitness;
-    //                 } catch(e){
-    //                   var fitness = curr_fitness;  
-    //                   // console.log(e);
-    //                 }
-                    
-    //                 // const fitness = JSON.parse(this_response.split('}{')).fitness;  
-    //                 const curr_val = parseInt($('#myProgress').attr('aria-valuenow'));
-                    
-    //                 // if (curr_val <= (100/result_jurusan.length)) {
-    //                 //     const new_val = (fitness/result_jurusan.length);
-    //                 // }else{
-    //                 //     const new_val = total_progress[i] + (fitness/result_jurusan.length);
-    //                 // }
-
-
-    //                 if (curr_val <= data_progress[0]) {
-    //                     var new_val = (fitness * data_progress[i]);
-    //                 }else{
-    //                     var new_val = total_jadwal.progress[i] + (fitness * data_progress[i]);
-    //                 }
-
-    //                 const percent = parseInt(curr_val > new_val ? curr_val : new_val);
-
-    //                 $('#myProgress').attr('aria-valuenow', percent).css('width', percent + '%').text(percent + '%');
-    //             }, false);
-    //             return xhr;
-    //         },
-    //         success: function(response) {
-    //           var res = JSON.parse(response.split('{"fitness":"1.0000"}')[1]);
-
-    //           var ms = (new Date().getTime() - start);
-    //           min = Math.floor((ms/1000/60) << 0),
-    //           sec = Math.floor((ms/1000) % 60);
-
-    //           if (res['status'] == true) {
-    //             $('#table').bootstrapTable('removeAll');
-    //             $('#table').bootstrapTable('load', res[1]);
-    //               if (res[0] == result_jurusan.length) {
-    //                 $('.progress').removeClass('d-block').addClass('d-none');
-
-    //                 $('#submitBtn')
-    //                   .attr('disabled',false)
-    //                   .html('<span class="icon text-white-50"><i class="far fa-paper-plane"></i></span><span class="text">Proses</span>');
-    //                   Swal.fire({
-    //                     position: 'top-end',
-    //                     icon: 'success',
-    //                     title: 'Jadwal Kuliah Berhasil Dibuat, ' + 'Waktu proses = ' + min + ' menit, ' + sec + ' detik',
-    //                     showConfirmButton: true
-    //                   })
-    //               }
-    //             }else
-    //             if(res['status'] == false){
-    //               $('.progress').removeClass('d-block').addClass('d-none');
-
-    //               $('#submitBtn')
-    //                   .attr('disabled',false)
-    //                   .html('<span class="icon text-white-50"><i class="far fa-paper-plane"></i></span><span class="text">Proses</span>');
-
-    //               Swal.fire({
-    //                   position: 'top-end',
-    //                   icon: 'error',
-    //                   title: 'Tidak Ditemukan Solusi Optimal, Waktu proses = ' + min + ' menit, ' + sec + ' detik',
-    //                   showConfirmButton: true
-    //                 })
-    //             }
-    //         },
-    //         error : function(jqXHR, textStatus, errorThrown){
-    //           $('.progress').removeClass('d-block').addClass('d-none');
-
-    //           $('#submitBtn')
-    //               .attr('disabled',false)
-    //               .html('<span class="icon text-white-50"><i class="far fa-paper-plane"></i></span><span class="text">Proses</span>');
-    //           var ms = (new Date().getTime() - start);
-    //           min = Math.floor((ms/1000/60) << 0),
-    //           sec = Math.floor((ms/1000) % 60);
-
-    //           Swal.fire({
-    //                   position: 'top-end',
-    //                   icon: 'error',
-    //                   title: 'Jadwal Kuliah Gagal Dibuat, ' + 'Waktu proses = ' + min + ' menit, ' + sec + ' detik',
-    //                   showConfirmButton: true
-    //                 })
-
-    //           console.log(jqXHR.responseText);
-    //           console.log(textStatus);
-
-    //         }
-    //     });
-    //   }
-    // }
 
       function getTotalJadwal(data,prodi){
         var res = jQuery.ajax({
@@ -1031,45 +932,104 @@
           return html.join('')
         }
 
-        function aksiFormatter(val){
-            return ["<button data-toggle='tooltip' title='Ubah' class='ubah btn btn-warning btn-sm'>",
-                    "<i class='fas fa-pencil-alt'></i>",
-                    "</button>"].join(' ');
-        }
+				function update_jadwal(){
+            $('#formJadwal').submit();
+            var data = $('#formJadwal').serializeArray();
+            var id = $('input[name=id]').val();
 
-        window.aksiEvents = {
-            'click .ubah': function (e, value, row, index) {
-                $('#tableBentrok').editable();
+            data = jQuery.grep(data, function(value) {
+              return value['name'] != 'id';
+            });
+
+            var hasErr = $('#formJadwal').find(".has-error").length;
+
+            if (hasErr == 0) {
+                jQuery.ajax({
+                    type: "POST",
+                    url: "<?php echo base_url() ?>"+"admin/manajemen",
+                    dataType: 'JSON',
+                    data: {manajemen:'update',form:'jadwalkuliah',id:id,data:data},
+                    success: function(res) {
+                            if(res){
+                                Swal.fire(
+                                      'Berhasil!',
+                                      'Jadwal berhasil diubah',
+                                      'success'
+                                    )
+                                    setTimeout(function(){location.reload(); },500);
+                            }
+                        }
+                });
             }
         }
 
+				$("#updateBtn").click(function (){
+              var ButtonText = $.trim($(this).text());
+              if(ButtonText == "Update"){
+                update_jadwal();
+              }
+         })
 
-        // function rowStyle(row, index) {
-        //   var classes = 'table-light';
-          
+        function aksiFormatter(val){
+          return ["<button data-toggle='tooltip' title='Ubah' class='ubah btn btn-warning btn-sm'>",
+                    "<i class='fas fa-pencil-alt'></i>",
+                    "</button>",
+                    "<button data-toggle='tooltip' title='Hapus' class='hapus btn btn-danger btn-sm mt-2'>",
+                    "<i class='fas fa-trash'></i>",
+                    "</button>"].join(' ');
+        }
 
-        //   if (row.programstudi == 'Teknik Informatika') {
-        //     return {
-        //       classes: classes[0]
-        //     }
-        //   }else
-        //   if (row.programstudi == 'Teknik Elektro') {
-        //     return {
-        //       classes: classes[1]
-        //     }
-        //   }else
-        //   if (row.programstudi == 'Teknik Sipil') {
-        //     return {
-        //       classes: classes[2]
-        //     }
-        //   }else
-        //   if (row.programstudi == 'Perencanaan Wilayah dan Kota') {
-        //     return {
-        //       classes: classes[3]
-        //     }
-        //   }
-        //   return {}
-        // }
+				window.aksiEvents = {
+          'click .ubah': function (e, value, row, index) {
+                $('#formJadwal').bootstrapValidator('resetForm', true);
+                $('#formJadwal').trigger("reset");
+
+                $('#ubahModal').modal();
+                $('#myModalLabel').html("Ubah Jadwal");
+
+                $('input[name=id]').val(row.id);
+                $('select[name=hari]').val(row.hari);
+                $('select[name=range_jam]').val(row.jam_kuliah);
+                $('select[name=nama_mk]').val(row.nama_mk);
+                $('select[name=sks]').val(row.sks);
+                $('select[name=semester]').val(row.semester);
+                $('select[name=dosen]').val(row.dosen);
+                $('select[name=ruang]').val(row.ruang);
+                $('#submitBtn').html('<span class="text text-white">Update</span>');
+            },
+            'click .hapus': function (e, value, row, index) {
+                swal.fire({
+                    title: "Warning",
+                    text: "Anda yakin untuk menghapus "+row.id+" ?",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    showCloseButton: false,
+                    cancelButtonColor: '#eaeaea`',
+                    confirmButtonColor: '#d33',
+                    confirmButtonText: 'Ya, Hapus',
+                    cancelButtonText: 'Batal'
+                }).then(function(res){
+                    if(res.value){
+                        jQuery.ajax({
+                            type: "POST",
+                            url: "<?php echo base_url() ?>"+"admin/manajemen",
+                            dataType: "JSON",
+                            data: {manajemen:"hapus",form:'jadwalkuliah',id:row.id},
+                            success: function(res){
+                                if (res === true) {
+                                    Swal.fire(
+                                      'Berhasil!',
+                                      'Dosen berhasil dihapus',
+                                      'success'
+                                    )
+                                    setTimeout(function(){location.reload(); },500);
+                                }
+                            }
+                        });
+                    }
+                });
+            }
+        }
 
         jQuery.fn.ForceNumericOnly = function(){
             return this.each(function()
